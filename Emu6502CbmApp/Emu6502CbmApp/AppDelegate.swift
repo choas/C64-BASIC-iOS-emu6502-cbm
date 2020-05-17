@@ -3,7 +3,6 @@
 //  Emu6502CbmApp
 //
 //  Created by Gregori, Lars on 17.05.20.
-//  Copyright © 2020 Gregori, Lars. All rights reserved.
 //
 
 import UIKit
