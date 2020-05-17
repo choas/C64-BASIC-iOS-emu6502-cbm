@@ -1,0 +1,4 @@
+module Libemu6502cbm [system] {
+  header "Dependencies/c-simple-emu6502-cbm/emuc64.h"
+  export *
+}
