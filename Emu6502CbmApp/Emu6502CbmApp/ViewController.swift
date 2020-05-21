@@ -54,7 +54,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         let cmd = """
         10 PRINT "I'm thinking of a number between 1 and 99"
         15 C=0
-        20 X=RND(-IT):X=INT(RND(1)*100+1)
+        20 X=RND(-TI):X=INT(RND(1)*100+1)
         25 G=0
         30 PRINT "GUESS";:INPUT G
         40 IF G<=0 OR G>=100 OR G<>INT(G) THEN PRINT "TRY AGAIN":GOTO 30
