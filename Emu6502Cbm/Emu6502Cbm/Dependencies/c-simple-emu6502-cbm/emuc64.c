@@ -72,6 +72,7 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <sys/stat.h>
+#include <sys/time.h> // gettimeofday
 #include <string.h>
 #include <time.h>
 #ifdef WIN32
@@ -317,6 +318,22 @@ extern void C64_Init(int ram_size, const char* basic_file, const char* chargen_f
 
 extern byte GetMemory(ushort addr)
 {
+    if (addr == 0xa2 ) {
+        // RDTIM
+        time_t  now = time(0);
+        struct tm       bd;
+        struct timeval  tv;
+
+        localtime_r(&now, &bd);
+        gettimeofday(&tv, 0);
+
+        unsigned long jiffies = ((bd.tm_hour*60 + bd.tm_min)*60 + bd.tm_sec)*60 + tv.tv_usec / (1000000/60);
+
+        ram[0xa0] = (unsigned char)(jiffies/65536);
+        ram[0xa1] = (unsigned char)((jiffies%65536)/256);
+        ram[0xa2] = (unsigned char)(jiffies%256);
+    }
+    
 	if (addr < sizeof(ram) 
 		  && (
 			  addr < basic_addr // always RAM
@@ -335,32 +352,13 @@ extern byte GetMemory(ushort addr)
 			return char_rom[addr - io_addr];
 		else if (addr >= color_addr && addr < color_addr + sizeof(color_nybles))
 			return color_nybles[addr - color_addr] | 0xF0;
-        else if (addr == 0xdc04)
-        {
-            int c = 1;
-            printf("\n");
-            for(int i = 0x0400; i<= 0x07e7; i++) {
-                if (ram[i] >= 32)
-                printf("%c", ram[i]);
-                else if (ram[i] == 32)
-                    printf("%d", c%10);
-                else
-                    printf("%c", ram[i] + '@');
-                if (c > 10 && c%40 == 0) {
-                    printf("\n");
-                }
-                c++;
-            }
-            
-        
-            return time(NULL) & 0xFF;
+        else if (addr >= 0xdc04 && addr <= 0xdc09) {
+            ram[0xdc04] = time(NULL) & 0xFF;
+            ram[0xdc05] = (time(NULL) >> 8) & 0xFF;
+            ram[0xdc08] = (time(NULL) >> 16) & 0xFF;
+            ram[0xdc09] = (time(NULL) >> 24) & 0xFF;
+            return ram[addr];
         }
-        else if (addr == 0xdc04)
-            return (time(NULL) >> 8) & 0xFF;
-        else if (addr == 0xdc08)
-            return (time(NULL) >> 16) & 0xFF;
-        else if (addr == 0xdc09)
-            return (time(NULL) >> 24) & 0xFF;
 		else
 			return 0; // io[addr - io_addr];
 	}
