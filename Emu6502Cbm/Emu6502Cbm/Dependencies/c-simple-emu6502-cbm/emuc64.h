@@ -40,3 +40,9 @@ extern void MyResetRun(void);
 extern void setCommand(const char*);
 extern void writeChar(unsigned char);
 extern unsigned char readChar(void);
+
+typedef unsigned char byte;
+typedef unsigned short ushort;
+
+extern byte GetMemory(ushort);
+extern void SetMemory(ushort, byte);

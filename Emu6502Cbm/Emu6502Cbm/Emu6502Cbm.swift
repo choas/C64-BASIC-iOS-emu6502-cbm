@@ -32,6 +32,7 @@ public final class Emu6502cbm : NSObject {
         
         if (basicPath == nil || chargenPath == nil || kernalPath == nil) {
             errorString = "ERROR: ROMs are missing\n";
+            print(errorString)
             return
         }
 
@@ -60,5 +61,21 @@ public final class Emu6502cbm : NSObject {
             c = getChar()
         }
         return buf;
+    }
+    
+    public func readRam(addr baseaddr: Int, count: Int) -> [UInt8] {
+        var data = [UInt8](repeating: 0, count: count)
+        for i in 0..<count {
+            let addr = baseaddr + i
+            data[i] = GetMemory(ushort(addr))
+        }
+
+        return data
+    }
+    
+    public func writeRam(addr baseaddr: Int, data: [UInt8]) {
+        for i in 0..<data.count {
+            SetMemory(ushort(baseaddr + i), data[i])
+        }
     }
 }
