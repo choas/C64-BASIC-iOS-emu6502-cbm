@@ -122,6 +122,9 @@
 			isa = PBXGroup;
 			children = (
 				72353061246B546E00398F87 /* emu6502.h */,
+				7235306C246B546E00398F87 /* emuc64.h */,
+				72353072246B546E00398F87 /* emu6502.c */,
+				72353078246B546E00398F87 /* emuc64.c */,
 				72353062246B546E00398F87 /* bank_test.prg */,
 				72353063246B546E00398F87 /* bank_test.asm */,
 				72353064246B546E00398F87 /* circle.prg */,
@@ -132,19 +135,16 @@
 				72353069246B546E00398F87 /* circle.png */,
 				7235306A246B546E00398F87 /* guess2.bas */,
 				7235306B246B546E00398F87 /* c-simple-emu6502-cbm.vcxproj */,
-				7235306C246B546E00398F87 /* emuc64.h */,
 				7235306D246B546E00398F87 /* cbmconsole.c */,
 				7235306E246B546E00398F87 /* README.md */,
 				7235306F246B546E00398F87 /* guess2.prg */,
 				72353070246B546E00398F87 /* guess1.prg */,
 				72353071246B546E00398F87 /* main.c */,
-				72353072246B546E00398F87 /* emu6502.c */,
 				72353073246B546E00398F87 /* .gitignore */,
 				72353074246B546E00398F87 /* c64-charset.bas */,
 				72353075246B546E00398F87 /* c-simple-emu6502-cbm.sln */,
 				72353076246B546E00398F87 /* circle.bas */,
 				72353077246B546E00398F87 /* cbmconsole.h */,
-				72353078246B546E00398F87 /* emuc64.c */,
 			);
 			path = "c-simple-emu6502-cbm";
 			sourceTree = "<group>";
