@@ -11,7 +11,7 @@
 
 
 int rpos = -1;
-char command[1*1024];
+char command[2*1024];
 
 void setCommand(const char* cmd) {
     strcpy(command, cmd);
