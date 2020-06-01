@@ -15,7 +15,7 @@ class C64Mandelbrot: ObservableObject {
     var isCodeStarted = false
     var mandelbrotCount = 0
     
-    var reps: UInt8 = 40
+//    var reps: UInt8 = 40
     
     init() {
         let queue = DispatchQueue(label: "emu6502cbm", qos: .background)
@@ -27,7 +27,7 @@ class C64Mandelbrot: ObservableObject {
     }
     
     func setParameter(xl: Double, xu: Double, yl: Double, yu: Double, reps: UInt8) {
-        let size = 1 + 8  // neg + 64 bit
+        let size = 8  // neg + 64 bit
         var param = [UInt8](repeating: 0, count: size * 4 + 1)
 
         convert(double: xl, in: &param, at: 0 * size)
@@ -35,24 +35,29 @@ class C64Mandelbrot: ObservableObject {
         convert(double: yl, in: &param, at: 2 * size)
         convert(double: yu, in: &param, at: 3 * size)
         param[param.count - 1] = reps
-        self.reps = reps
+//        self.reps = reps
 
         self.emu6502cbm.writeRam(addr: 38000, data: param)
     }
     
-    fileprivate func convert(double: Double, in mem: inout [UInt8], at pos: Int) {
-        var t = double
-        if t < 0 {
-            mem[pos] = 1
-            t *= -1
-        }
+    fileprivate func convert(double value: Double, in mem: inout [UInt8], at pos: Int) {
+        var t = abs(value)
         var d = 1.0
-        for i in 1...8 {
+        for i in 0...7 {
             let n = t * d
             t = t - (Double(Int(n)) / d)
             d *= 256.0
             mem[pos + i] = UInt8(n)
         }
+        if value < 0 {
+            mem[pos] += 0x80
+        }
+        
+        var out = "\(value) -> "
+        for i in 0...7 {
+            out += "\(mem[pos + i]) "
+        }
+        print(out)
     }
 
     func runCode() {
@@ -66,17 +71,16 @@ class C64Mandelbrot: ObservableObject {
         16 GOTO 120
 
         REM *** CONVERT MEM TO DOUBLE
-        20 M = 1: V = 0
-        21 IF PEEK(ADDR) <> 0 THEN M = -1
-        22 D = 1
-        25 FOR I = 1 TO 9
-        26 : ADDR = ADDR + 1
-        27 : X = PEEK(ADDR)
-        28 : V = V + (X / D)
+        20 M = 1: V = 0: D = 1
+        25 FOR I = 0 TO 7
+        26 : X = PEEK(ADDR)
+        27 : ADDR = ADDR + 1
+        28 : IF (I = 0) AND ((X AND 128) > 0) THEN M = -1: X = X AND 127
+        29 : V = V + (X / D)
         30 : D = D * 256
         35 NEXT
         36 V = V * M
-        39 RETURN
+        40 RETURN
 
         """
 
@@ -126,6 +130,8 @@ class C64Mandelbrot: ObservableObject {
         310 ISMND = 0
         370 : IF (RZ*RZ + IZ*IZ)>4 THEN ISMND=K:K=REPS
         430 POKE 38000+COUNT,ISMND
+
+        321 POKE 38000+(I+J*WIDTH),K
 
         """
         
