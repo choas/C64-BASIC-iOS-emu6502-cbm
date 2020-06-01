@@ -15,8 +15,6 @@ class C64Mandelbrot: ObservableObject {
     var isCodeStarted = false
     var mandelbrotCount = 0
     
-//    var reps: UInt8 = 40
-    
     init() {
         let queue = DispatchQueue(label: "emu6502cbm", qos: .background)
         queue.async {
@@ -35,7 +33,6 @@ class C64Mandelbrot: ObservableObject {
         convert(double: yl, in: &param, at: 2 * size)
         convert(double: yu, in: &param, at: 3 * size)
         param[param.count - 1] = reps
-//        self.reps = reps
 
         self.emu6502cbm.writeRam(addr: 38000, data: param)
     }
