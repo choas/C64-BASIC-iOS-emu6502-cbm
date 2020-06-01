@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:../C64-BASIC-iOS-emu6502-cbm/Emu6502Cbm/Emu6502Cbm.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/d064066/app/C64-BASIC-iOS-emu6502-cbm/Mandelbrot/Mandelbrot.xcodeproj">
+   </FileRef>
+</Workspace>
