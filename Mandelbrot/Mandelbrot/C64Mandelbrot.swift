@@ -16,7 +16,7 @@ class C64Mandelbrot: ObservableObject {
     var mandelbrotCount = 0
     
     init() {
-        let queue = DispatchQueue(label: "emu6502cbm", qos: .background)
+        let queue = DispatchQueue(label: "emu6502cbm")
         queue.async {
             self.emu6502cbm.run(startup: nil)
         }
