@@ -416,8 +416,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/emqx/CocoaMQTT/";
 			requirement = {
-				branch = master;
-				kind = branch;
+				kind = revision;
+				revision = 1077744b9e2e8d16e6551ce0e87fa883c788556e;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
