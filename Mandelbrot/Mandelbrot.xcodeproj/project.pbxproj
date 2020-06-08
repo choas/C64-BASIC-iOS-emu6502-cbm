@@ -3,11 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		721FDB70247B0E3600D2903C /* Mandelbrot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721FDB6F247B0E3600D2903C /* Mandelbrot.swift */; };
+		724E50D7248D599800FE1EFC /* Mqtt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724E50D6248D599800FE1EFC /* Mqtt.swift */; };
+		724E50DA248D5C6100FE1EFC /* CocoaMQTT in Frameworks */ = {isa = PBXBuildFile; productRef = 724E50D9248D5C6100FE1EFC /* CocoaMQTT */; };
 		72510BCD248065D90006954E /* C64Mandelbrot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72510BCC248065D90006954E /* C64Mandelbrot.swift */; };
 		726054E6247874AF008F8299 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726054E5247874AF008F8299 /* AppDelegate.swift */; };
 		726054E8247874AF008F8299 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726054E7247874AF008F8299 /* SceneDelegate.swift */; };
@@ -38,6 +40,7 @@
 
 /* Begin PBXFileReference section */
 		721FDB6F247B0E3600D2903C /* Mandelbrot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mandelbrot.swift; sourceTree = "<group>"; };
+		724E50D6248D599800FE1EFC /* Mqtt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mqtt.swift; sourceTree = "<group>"; };
 		72510BCC248065D90006954E /* C64Mandelbrot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = C64Mandelbrot.swift; sourceTree = "<group>"; };
 		726054E2247874AF008F8299 /* Mandelbrot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mandelbrot.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		726054E5247874AF008F8299 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -58,6 +61,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				724E50DA248D5C6100FE1EFC /* CocoaMQTT in Frameworks */,
 				7260551B247989E4008F8299 /* Emu6502Cbm.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -95,6 +99,7 @@
 				726054F3247874B4008F8299 /* Info.plist */,
 				7260551E24798CB3008F8299 /* ROMs */,
 				726054ED247874B4008F8299 /* Preview Content */,
+				724E50D6248D599800FE1EFC /* Mqtt.swift */,
 			);
 			path = Mandelbrot;
 			sourceTree = "<group>";
@@ -142,6 +147,9 @@
 			dependencies = (
 			);
 			name = Mandelbrot;
+			packageProductDependencies = (
+				724E50D9248D5C6100FE1EFC /* CocoaMQTT */,
+			);
 			productName = Mandelbrot01;
 			productReference = 726054E2247874AF008F8299 /* Mandelbrot.app */;
 			productType = "com.apple.product-type.application";
@@ -170,6 +178,9 @@
 				Base,
 			);
 			mainGroup = 726054D9247874AF008F8299;
+			packageReferences = (
+				724E50D8248D5C6100FE1EFC /* XCRemoteSwiftPackageReference "CocoaMQTT" */,
+			);
 			productRefGroup = 726054E3247874AF008F8299 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -201,6 +212,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				726054E6247874AF008F8299 /* AppDelegate.swift in Sources */,
+				724E50D7248D599800FE1EFC /* Mqtt.swift in Sources */,
 				726054E8247874AF008F8299 /* SceneDelegate.swift in Sources */,
 				726054EA247874AF008F8299 /* ContentView.swift in Sources */,
 				721FDB70247B0E3600D2903C /* Mandelbrot.swift in Sources */,
@@ -398,6 +410,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		724E50D8248D5C6100FE1EFC /* XCRemoteSwiftPackageReference "CocoaMQTT" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/emqx/CocoaMQTT/";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		724E50D9248D5C6100FE1EFC /* CocoaMQTT */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 724E50D8248D5C6100FE1EFC /* XCRemoteSwiftPackageReference "CocoaMQTT" */;
+			productName = CocoaMQTT;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 726054DA247874AF008F8299 /* Project object */;
 }

@@ -15,13 +15,18 @@ class C64Mandelbrot: ObservableObject {
     var isCodeStarted = false
     var mandelbrotCount = 0
     
+    var mqtt = Mqtt();
+    var lastI = 0
+    var lastJ = 0
+    var countIJ = 0
+    
     init() {
         let queue = DispatchQueue(label: "emu6502cbm")
         queue.async {
             self.emu6502cbm.run(startup: nil)
         }
 
-        let _ = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(update), userInfo: nil, repeats: true)
+        let _ = Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(update), userInfo: nil, repeats: true)
     }
     
     func setParameter(xl: Double, xu: Double, yl: Double, yu: Double, reps: UInt8) {
@@ -55,6 +60,13 @@ class C64Mandelbrot: ObservableObject {
             out += "\(mem[pos + i]) "
         }
         print(out)
+    }
+    
+    func resetPositionIJ() {
+        self.emu6502cbm.writeRam(addr: 39000, data: [255, 255])
+        lastI = 0
+        lastJ = 0
+        countIJ = 0
     }
 
     func runCode() {
@@ -129,6 +141,8 @@ class C64Mandelbrot: ObservableObject {
         430 POKE 38000+COUNT,ISMND
 
         321 POKE 38000+(I+J*WIDTH),K
+        431 POKE 39000,I:POKE 39001,J
+        289 POKE 39000,255:POKE 39001,255
 
         """
         
@@ -160,6 +174,7 @@ class C64Mandelbrot: ObservableObject {
         
         if !isCodeStarted {
             isCodeStarted = true
+            resetPositionIJ();
             setParameter(xl: -2.0, xu: 0.5, yl: -1.1, yu: 1.1, reps: 40)
             runCode()
         }
@@ -168,11 +183,39 @@ class C64Mandelbrot: ObservableObject {
         for (index, b) in result.enumerated() {
             ram[index] = UInt8(b)
         }
+        
+        let posIJ = self.emu6502cbm.readRam(addr: 39000, count: 2)
+        let posI = Int(posIJ[0])
+        let posJ = Int(posIJ[1])
+        let posNew = (posJ * 40 + posI - 1)
+        let posLast = (lastJ * 40 + lastI)
+        if posLast > posNew {
+            return
+        }
+        if posI != 255 && posJ != 255 {
+            for i in posLast ... posNew {
+                if i == countIJ {
+                    mqtt.publish("\(ram[i])")
+                    countIJ += 1
+                }
+            }
+            lastI = posI
+            lastJ = posJ
+        } else {
+            if countIJ > 0 && countIJ < 1000 {
+                for i in posLast ... 999 {
+                    mqtt.publish("\(ram[i])")
+                    countIJ += 1
+                }
+            }
+        }
 
     }
     
     func nextMandelbrot() {
         self.mandelbrotCount += 1
+        
+        resetPositionIJ()
         
         if mandelbrotCount == 1 {
             self.setParameter(xl: -0.6, xu: -0.5, yl: -0.6, yu: -0.7, reps: UInt8(40))
