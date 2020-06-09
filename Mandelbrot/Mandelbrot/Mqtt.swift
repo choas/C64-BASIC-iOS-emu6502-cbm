@@ -12,8 +12,8 @@ class Mqtt {
     
     let mqtt: CocoaMQTT?
     
-    let defaultHost = "192.168.2.64" // "mqtt.eclipse.org"
-    let topic = "/c64/mandelbrot"
+    let defaultHost = "mqtt.eclipse.org"
+    let topic = "c64/mandelbrot"
     
     init() {
         let clientID = "CocoaMQTT-" + String(ProcessInfo().processIdentifier)
