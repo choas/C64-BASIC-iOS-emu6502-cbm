@@ -16,9 +16,9 @@ class C64Mandelbrot: ObservableObject {
     var mandelbrotCount = 0
     
     var mqtt = Mqtt();
-    var lastI = 0
-    var lastJ = 0
-    var countIJ = 0
+    var prevI = 0
+    var prevJ = 0
+    var isStartedDatatransfer = false
     
     init() {
         let queue = DispatchQueue(label: "emu6502cbm")
@@ -64,9 +64,9 @@ class C64Mandelbrot: ObservableObject {
     
     func resetPositionIJ() {
         self.emu6502cbm.writeRam(addr: 39000, data: [255, 255])
-        lastI = 0
-        lastJ = 0
-        countIJ = 0
+        prevI = 0
+        prevJ = 0
+        isStartedDatatransfer = false
     }
 
     func runCode() {
@@ -187,29 +187,25 @@ class C64Mandelbrot: ObservableObject {
         let posIJ = self.emu6502cbm.readRam(addr: 39000, count: 2)
         let posI = Int(posIJ[0])
         let posJ = Int(posIJ[1])
-        let posNew = (posJ * 40 + posI - 1)
-        let posLast = (lastJ * 40 + lastI)
-        if posLast > posNew {
-            return
-        }
-        if posI != 255 && posJ != 255 {
-            for i in posLast ... posNew {
-                if i == countIJ {
-                    mqtt.publish("\(ram[i])")
-                    countIJ += 1
-                }
+        var posNew = (posJ * 40 + posI - 1)
+        let posPrev = (prevJ * 40 + prevI)
+        
+        if posI == 255 || posJ == 255 {
+            if !isStartedDatatransfer || posPrev > posNew {
+                // not started
+                return
             }
-            lastI = posI
-            lastJ = posJ
+            // finished, get rest
+            posNew = 999
+            isStartedDatatransfer = false
         } else {
-            if countIJ > 0 && countIJ < 1000 {
-                for i in posLast ... 999 {
-                    mqtt.publish("\(ram[i])")
-                    countIJ += 1
-                }
-            }
+            isStartedDatatransfer = true
         }
-
+        
+        let data = Array(ram[posPrev ... posNew])
+        mqtt.publish(data)
+        prevI = posI
+        prevJ = posJ
     }
     
     func nextMandelbrot() {

@@ -93,13 +93,13 @@
 				726054E7247874AF008F8299 /* SceneDelegate.swift */,
 				72510BCC248065D90006954E /* C64Mandelbrot.swift */,
 				726054E9247874AF008F8299 /* ContentView.swift */,
+				724E50D6248D599800FE1EFC /* Mqtt.swift */,
 				721FDB6F247B0E3600D2903C /* Mandelbrot.swift */,
 				726054EB247874B4008F8299 /* Assets.xcassets */,
 				726054F0247874B4008F8299 /* LaunchScreen.storyboard */,
 				726054F3247874B4008F8299 /* Info.plist */,
 				7260551E24798CB3008F8299 /* ROMs */,
 				726054ED247874B4008F8299 /* Preview Content */,
-				724E50D6248D599800FE1EFC /* Mqtt.swift */,
 			);
 			path = Mandelbrot;
 			sourceTree = "<group>";

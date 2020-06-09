@@ -26,9 +26,9 @@ class Mqtt {
         let _ = mqtt!.connect()
     }
     
-    func publish(_ value: String) {
+    func publish(_ payload: [UInt8]) {
         if let mqtt = mqtt {
-            mqtt.publish(self.topic, withString: value, qos: .qos0)
+            mqtt.publish(CocoaMQTTMessage(topic: self.topic, payload: payload, qos: .qos0))
         }
     }
 }
